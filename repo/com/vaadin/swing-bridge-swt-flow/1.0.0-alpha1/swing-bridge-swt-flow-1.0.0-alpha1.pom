@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.vaadin</groupId>
+    <artifactId>vaadin-swing-bridge-swt</artifactId>
+    <version>1.0.0-alpha1</version>
+  </parent>
+
+  <artifactId>swing-bridge-swt-flow</artifactId>
+  <name>Vaadin Swing Bridge SWT Flow</name>
+  <description>The SwtBridge Vaadin component: runs one copy of an SWT
+    application per user in the server's JVM, on Windows, and shows it in a
+    canvas.</description>
+
+  <dependencies>
+    <!-- Not swing-bridge-swt-runtime: it uses SWT and is loaded by the
+         shared SWT class loader, from the swt-bridge directory. -->
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>${asm.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>swing-bridge-flow</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-slf4j2-impl</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>flow-server</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <!-- No longer managed by the Vaadin BOM since 25.3. -->
+      <version>6.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- DisplayPatchTest patches and verifies the real Display class. -->
+    <dependency>
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.swt.${swt.build.platform}</artifactId>
+      <version>${swt.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-util</artifactId>
+      <version>${asm.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

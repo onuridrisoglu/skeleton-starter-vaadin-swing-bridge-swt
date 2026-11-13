@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.vaadin</groupId>
+    <artifactId>vaadin-parent</artifactId>
+    <version>3.0.3</version>
+  </parent>
+  <groupId>com.vaadin</groupId>
+  <artifactId>vaadin-swing-bridge-swt</artifactId>
+  <version>1.0.0-alpha1</version>
+  <packaging>pom</packaging>
+  <name>SWT extensions for Vaadin Swing Bridge (proof of concept)</name>
+  <description>Run SWT applications in the browser using Vaadin Flow, on top of Vaadin Swing Bridge</description>
+
+  <licenses>
+    <license>
+      <name>Vaadin Commercial License and Service Terms</name>
+      <url>https://vaadin.com/commercial-license-and-service-terms</url>
+    </license>
+  </licenses>
+
+  <modules>
+    <module>swing-bridge-swt-flow</module>
+    <module>swing-bridge-swt-runtime</module>
+    <module>simple-swt-apps</module>
+    <module>swing-bridge-swt-playground</module>
+  </modules>
+
+  <properties>
+    <maven.compiler.release>21</maven.compiler.release>
+    <!-- Reused for its canvas component and its license check. -->
+    <swing-bridge.version>1.4.0-alpha1</swing-bridge.version>
+    <vaadin.version>25.3.5</vaadin.version>
+    <swt.version>3.135.0</swt.version>
+    <!-- In the shared SWT class loader, for the runtime's Win32 calls. -->
+    <jna.version>5.17.0</jna.version>
+    <!-- The applications run on Windows only. Code compiles against the x64
+         build of SWT, whose API is the same on ARM64; the build for the
+         server's CPU is chosen where the jars are copied (see the
+         playground). -->
+    <swt.build.platform>win32.win32.x86_64</swt.build.platform>
+    <!-- Patches SWT's Display.getDefault() as SWT is loaded. -->
+    <asm.version>9.8</asm.version>
+    <spotless.plugin.version>3.1.0</spotless.plugin.version>
+    <spotless.license-header>https://github.com/vaadin/flow/raw/main/eclipse/vaadin-commercial-license-header.txt</spotless.license-header>
+    <junit-jupiter.version>5.10.2</junit-jupiter.version>
+  </properties>
+
+  <!-- Swing Bridge pre-releases (1.4.0-alpha1). -->
+  <repositories>
+    <repository>
+      <id>vaadin-prereleases</id>
+      <url>https://maven.vaadin.com/vaadin-prereleases/</url>
+    </repository>
+  </repositories>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit-jupiter.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-bom</artifactId>
+        <version>${vaadin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>swing-bridge-flow</artifactId>
+        <version>${swing-bridge.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.plugin.version}</version>
+        <configuration>
+          <java>
+            <eclipse>
+              <file>https://github.com/vaadin/flow/raw/main/eclipse/VaadinJavaConventions.xml</file>
+            </eclipse>
+            <endWithNewline/>
+            <removeUnusedImports/>
+            <importOrder>
+              <file>https://github.com/vaadin/flow/raw/main/eclipse/flow.importorder</file>
+            </importOrder>
+            <forbidWildcardImports/>
+            <licenseHeader>
+              <file>${spotless.license-header}</file>
+            </licenseHeader>
+          </java>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

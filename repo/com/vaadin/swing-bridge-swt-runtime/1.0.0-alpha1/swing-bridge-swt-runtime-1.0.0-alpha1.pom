@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.vaadin</groupId>
+    <artifactId>vaadin-swing-bridge-swt</artifactId>
+    <version>1.0.0-alpha1</version>
+  </parent>
+
+  <artifactId>swing-bridge-swt-runtime</artifactId>
+  <name>Vaadin Swing Bridge SWT Runtime</name>
+  <description>Runs the SWT applications in the server's JVM on Windows, each
+    on a UI thread and a hidden desktop of its own: captures their windows and
+    replays browser input. Loaded by the shared SWT class loader, from the
+    swt-bridge directory, never from the server's class path.</description>
+
+  <dependencies>
+    <!-- The interfaces it implements (SwtRuntime, SwtTenant), from the
+         server's class loader, the shared SWT class loader's parent. -->
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>swing-bridge-swt-flow</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- In the swt-bridge directory, next to this jar. -->
+    <dependency>
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.swt.${swt.build.platform}</artifactId>
+      <version>${swt.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- user32 and gdi32 through JNA (hidden desktops, PrintWindow, posted
+         input). In the swt-bridge directory, next to this jar. -->
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>${jna.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>
